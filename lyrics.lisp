@@ -17,10 +17,9 @@
                    COLLATE NOCASE,
     lyrics TEXT    COLLATE NOCASE);"))
 
-(setup-db)
 
 (defstruct website
-  ;; website name, only used for documentation purposes 
+  ;; website name, only used for documentation purposes
   (name)
   ;; Template used to construct the actual url. It contains the artist-name and
   ;; song-name string, respectively, which need to be replaced with the user
@@ -176,3 +175,11 @@ not found, return nil."
                        ;; Escape quotes, otherwise the db insert will fail.
                        (regex-replace-all "\"" (aref lyrics 0) "\"\"")
                        (regex-replace-all "\"" lyrics "\"\"")))))))))
+(defun main ()
+  (setup-db)
+
+  (setf replic:*prompt* "lyrics> ")
+  (replic.completion:functions-to-commands :replic.base)
+  (replic.completion:functions-to-commands :lyrics)
+
+  (replic:repl))
